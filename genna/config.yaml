@@ -1,0 +1,55 @@
+example:
+  labels_config: 
+    - Green
+    - Blue
+    - Another
+    - New
+    - Tired
+  index_cols: idx
+  target: text
+  
+transcripts:
+  labels_config: 
+    - Important
+    - New Section
+  index_cols: time_stamp
+  target: text
+
+video_slicing:
+  labels_config: 
+    - Select
+    - Begin
+    - End
+  index_cols: time_stamp
+  target: text
+
+selections:
+  labels_config: 
+    - Keep
+  index_cols: index
+  target: text
+
+google_search:
+  labels_config: 
+    - Keep
+  index_cols: index
+  target: title
+  other_columns:
+    - snippet
+    - link
+  content_editable: False
+  add_remove_lines: True
+  search_column: Content
+
+script_editor:
+  labels_config:
+    - ppt
+    - vox
+  index_cols: index
+  target: text
+  allow_comments: True
+  content_editable: True
+  video_audio_select: True
+  add_lines: True
+  video_path: '../../endeavor/video_editor/data/stock_content'
+  audio_path: '../../endeavor/video_editor/data/bg_sounds'

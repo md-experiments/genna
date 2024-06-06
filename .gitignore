@@ -1,0 +1,28 @@
+
+# Model checkpoints
+*.pt
+*.zip
+
+#packaging
+*.egg-info
+.vscode
+dist/
+build/
+
+.DS_Store
+__pycache__/
+anna/data/*
+!anna/data/datasets/
+anna/data/datasets/*
+!anna/data/datasets/alex.csv
+!anna/data/annotations/
+anna/data/annotations/*
+!anna/data/annotations/alex_example_annotations.txt
+.ipynb_checkpoints/
+
+# Data folders
+
+# API keys
+aws_key*
+gcp_key*
+*.mp4

@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{page_config.prefix}}: {{ page_config.file_name }}</title>
+
+    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css"> -->
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+    
+    <!-- JavaScript Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <style>
+        html,
+        body,
+        .intro {
+        height: 50vh;
+        }
+
+        * {
+        box-sizing: border-box;
+        }
+
+        body {
+        background-color: #f1f1f1;
+        padding: 20px;
+        font-family: Arial;
+        }
+
+        .navbar {
+        overflow: hidden;
+        position: fixed; /* Set the navbar to fixed position */
+        top: 0; /* Position the navbar at the top of the page */
+        max-width: 1000px;
+        width: 100%;
+        padding: 10px 10px 10px 10px;
+        }
+        /* Center website */
+        .main {
+        max-width: 1000px;
+        margin: auto;
+        }
+        .has-search .form-control {
+            padding-left: 2.375rem;
+        }
+
+        .badge-transparent {
+            background-color: transparent;
+            color: transparent;
+            border-color: transparent;
+        }
+
+        .has-search .form-control-feedback {
+            position: absolute;
+            z-index: 2;
+            display: block;
+            width: 2.375rem;
+            height: 2.375rem;
+            line-height: 2.375rem;
+            text-align: center;
+            pointer-events: none;
+            color: #aaa;
+        }
+        
+
+        .secondary_text {
+            font-size: 15px;
+        }
+
+        .video_wrapper {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9, for an aspect ratio of 1:1 change to this value to 100% */ 
+            }
+            iframe{
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+   </style>
+    <script>
+
+    $(document).ready(function(){
+      $("button#button_label").click(function(){
+        var clickedBtnID = $( this );
+        var url_link = clickedBtnID.attr('name')
+        $.post(url_link,
+        {
+            'label_name': clickedBtnID.attr('class'),
+            'label_title': clickedBtnID.text(),
+            'url': url_link
+            },
+        function(data,status){
+            $(data.name).attr("class",data.class);
+            var current_value_button = $('span[name="counter'.concat(data.label_title,'"]')).text()
+            $('span[name="counter'.concat(data.label_title,'"]')).text(parseInt(current_value_button) + parseInt(data.outcome))
+        });
+      });
+
+      $("span#editable_text").keyup(function(){
+        var clickedForm = $( this );
+        var url_link = clickedForm.attr( "name" );
+        var name_textarea = 'span[name="'.concat(url_link,'"]');
+        var comment_text = $(name_textarea).text();
+        $.post(url_link,
+            {
+                'comment_field':comment_text,
+                'url': url_link
+            },
+            function(data,status){
+            $(data.name).attr("class",data.class);
+            $(data.name).attr("name",data.new_url);
+            var current_value_button = $('span[name="counterEdits"]').text()
+            $('span[name="counterEdits"]').text(parseInt(current_value_button) + parseInt(data.outcome))
+            });
+        });
+
+      $("badge#editable_badge").click(function(){
+        var clickedBtnID = $( this );
+        var url_link = clickedBtnID.attr('name')
+        $.post(url_link,
+        {
+            'url': url_link
+            },
+        function(data,status){
+            $(data.name).attr("class",data.class);
+            $(data.name).attr("name",data.new_url);
+            $('span[name="'.concat(data.new_url,'"]')).text(data.original_content);
+            var current_value_button = $('span[name="counterEdits"]').text()
+            $('span[name="counterEdits"]').text(parseInt(current_value_button) + parseInt(data.outcome))
+        });
+      });
+
+      $("textarea#comment_text").keyup(function(){
+        var clickedForm = $( this );
+        var url_link = clickedForm.attr( "name" );
+        var name_textarea = 'textarea[name="'.concat(url_link,'"]');
+        var comment_text = $(name_textarea).val();
+        $.post(url_link,
+            {'comment_field':comment_text},
+            function(data,status){
+            var current_value_button = $('span[name="counterComments"]').text()
+            $('span[name="counterComments"]').text(parseInt(current_value_button)+parseInt(data.outcome))
+            });
+        });
+
+        var myMediaEvents = function(){
+            var clickedForm = $( this );
+            var url_link = clickedForm.attr( "name" );
+            var name_textarea = 'input[name="'.concat(url_link,'"]');
+            var comment_text = $(name_textarea).val();
+            $.post(url_link,
+                {'comment_field':comment_text},
+                function(data,status){
+                var current_value_button = $('span[name="counterMedia"]').text()
+                $('span[name="counterMedia"]').text(parseInt(current_value_button)+parseInt(data.outcome))
+                });
+        };
+
+        $("input#audio_list")
+            .keyup(myMediaEvents)
+            .click(myMediaEvents);
+
+        $("input#video_list")
+            .keyup(myMediaEvents)
+            .click(myMediaEvents);
+    });
+    </script>
+    
+</head>
+
+<body>
+    <div id="element" name="element" style="margin-top: 50px;" class="ui container">
+        <div id="md_navbar">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="#"> </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+              <ul class="navbar-nav">
+                {% for nav_name in page_config.nav_bar %}
+                {% if nav_name.name == page_config.header %}
+                <li class="nav-item">
+                  <a class="nav-link active" href="{{ nav_name.link }}">{{ nav_name.name }}</a>
+                </li>
+                {% else %}
+                <li class="nav-item">
+                  <a class="nav-link" href="{{ nav_name.link }}">{{ nav_name.name }}</a>
+                </li>
+                {% endif %}
+                {% endfor %}
+              </ul>
+            </div>
+          </nav>
+        </div>
+        <h1 class="ui center aligned header">{{page_config.prefix}} -- {{page_config.file_name}} </h1>
+
+        <table>
+            <!-- HEADER: ARTICLE selection -->
+            <tr>
+              <th>Article: </th>
+              <th colspan="4">
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                        {{  page_config.file_name }}
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                    {% for file in page_config.list_files %}
+                    <li><a class="dropdown-item" href="/{{ page_config.prefix }}/annotate/{{ page_config.config_name }}/{{ file }}">{{ file }}</a></li>
+                    {% endfor %}
+                    </ul>
+                </div>
+            </th>
+            </tr>
+             <!-- HEADER: FORMAT, STATS & BUTTONS -->
+            <tr>
+            {% if page_config.editable_config %}
+            <th>Format: </th>
+            <th>
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                        {{ page_config.config_name }}
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                    {% for conf in  page_config.list_configs %}
+                        <li><a class="dropdown-item" href="/{{ page_config.prefix }}/annotate/{{ conf }}/{{  page_config.file_name }}">{{ conf }}</a></li>
+                    {% endfor %}
+                    </ul>
+                </div>
+            </th>
+            {% endif %}
+            <th></th>
+            <th>
+                <div class="btn-group" role="group">
+                    {% for label in ds.labels %}
+                    <button class="btn btn-{{ label.button_style }}">{{ label.title }}: <span name="counter{{ label.title }}">{{ label.count }}</span></a>
+                    {% endfor %}
+                    {% if ds.editor_features.allow_comments %}
+                    <button class="btn btn-dark">Comments: <span name="counterComments">{{ ds.nr_comments }}</span></button>
+                    {% endif %}
+                    {% if ds.editor_features.content_editable %}
+                    <button class="btn btn-dark">Edits: <span name="counterEdits">{{ ds.nr_edits }}</span></button>
+                    {% endif %}
+                </div>
+            </th>
+            <th>
+                <a class="btn btn-warning" href="/{{ page_config.prefix }}/annotate/{{  page_config.config_name }}/{{  page_config.file_name }}" role="button">Publish</a>
+            </th>
+            <th>
+                <a class="btn btn-warning" href="/{{  page_config.next_btn_url }}/{{  page_config.prefix  }}/{{  page_config.config_name }}/{{  page_config.file_name }}" role="button">Next &raquo;</a>
+            </th>
+            </tr>
+        </table>
+        <hr>
+        <div class="container">
+        <div class="form-group has-search">
+            <span class="fa fa-search form-control-feedback">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                  </svg>
+            </span>
+            
+            <input type="text" id="myInput" class="form-control" onkeyup="SearchFunction()" placeholder="Search content..">
+        </div>
+
+             <!-- TABLE HEAD -->
+            <div class="container">
+            <div class="row">
+                <div class="col-sm-1">#</div>
+                <div class="col-sm-1">ID</div>
+                {% if ds.editor_features.add_lines %}
+                <div class="col-sm"></div>
+                {% endif %}
+                {% if ds.editor_features.video_preview %}
+                <div class="col-sm-4">Content</div>
+                {% else %}
+                <div class="col-sm-7">Content</div>
+                {% endif %}
+                <div class="col-sm">Labels</div>
+                {% if ds.editor_features.allow_comments %}
+                <div class="col-sm-1">Comment</div>
+                {% endif %}
+                {% if ds.editor_features.video_audio_select %}
+                <div class="col-sm">Audio/Video</div>
+                {% endif %}
+                {% if ds.editor_features.video_preview %}
+                <div class="col-sm-4">Video</div>
+                {% endif %}
+
+            <!-- TABLE BODY -->
+            <div class="w-100"></div>
+            {% for data_point in ds.ds_list %}
+            <div class="col-sm-1">{{data_point.nr }}</div>
+            <div class="col-sm-1">{{data_point.id }}</div>
+            {% if ds.editor_features.add_lines %}
+            <div class="col-sm">
+                <a id="add_line"  href="/{{ page_config.prefix }}/add_line/{{ page_config.config_name }}/{{ page_config.file_name }}/{{ data_point.hash_id }}">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
+                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+                  </svg>
+                </a>
+            </div>
+            {% endif %}
+            {% if ds.editor_features.video_preview %}
+            <div class="col-sm-4">
+            {% else %}
+            <div class="col-sm-7">
+            {% endif %}  
+                <div>
+                {% if ds.editor_features.content_editable %}
+                        <span id="editable_text" name="/{{ page_config.prefix }}/content_edits/{{ page_config.config_name }}/{{ page_config.file_name }}/{{ data_point.hash_id }}" contenteditable="true">
+                            {{ data_point.content }}
+                        </span>
+                        {% if data_point.content_edited %}
+                        <badge id="editable_badge" name="/{{ page_config.prefix }}/remove_edits/{{ page_config.config_name }}/{{ page_config.file_name }}/{{ data_point.hash_id }}" class="badge bg-info">edit</span>
+                        {% else %}
+                        <badge id="editable_badge" name="/{{ page_config.prefix }}/content_edits/{{ page_config.config_name }}/{{ page_config.file_name }}/{{ data_point.hash_id }}" class="badge badge-transparent">edit</span>
+                        {% endif %}
+                {% else %}
+                    {{ data_point.content }}
+                {% endif %}
+                </div>
+                <div>
+                {% for new_col in ds.other_columns %}
+                <span class="secondary_text"><b>{{new_col}}: </b>{{ data_point[new_col] }}  </span>
+                {% endfor %}
+                </div>
+                </div>
+            <div class="col-sm">
+            {% for label in ds.labels %}
+            {% if label.name in data_point.labels %}
+            <button id="button_label" class="btn btn-{{ label.button_style }}" name="/{{ page_config.prefix }}/label/labels/{{ page_config.config_name }}/{{ page_config.file_name }}/{{ label.name }}/{{ data_point.hash_id }}">{{ label.title }}</a>
+            {% else %}
+            <button id="button_label" class="btn btn-outline-{{ label.button_style }}" name="/{{ page_config.prefix }}/label/labels/{{ page_config.config_name }}/{{ page_config.file_name }}/{{ label.name }}/{{ data_point.hash_id }}">{{ label.title }}</a>
+            {% endif %}
+            {% endfor %}
+            </div>
+            {% if ds.editor_features.allow_comments %}
+            <div class="col-sm-1">
+            <div id="comment_form" class="row g-3">
+                <div class="col-auto">
+                    <textarea id="comment_text" name="/{{ page_config.prefix }}/comment/comment/{{ page_config.config_name}}/{{ page_config.file_name }}/{{ data_point.hash_id }}" rows="1" cols="12">{{ data_point.comment }}</textarea>
+                </div>
+            </div>
+            </div>
+            {% endif %}
+            {% if ds.editor_features.video_audio_select %}
+            <div class="col-sm">
+                <div>
+                    A: 
+                    <input list="audio-list"  id="audio_list" value="{{data_point.media_audio_anno}}" cols="5" name="/{{ page_config.prefix }}/comment/media_audio_anno/{{ page_config.config_name}}/{{ page_config.file_name }}/{{ data_point.hash_id }}">
+                    <datalist id="audio-list" cols="5">
+                        {% for aux_file in ds.audio_files %}
+                        <option>{{aux_file}}</option>
+                        {% endfor %}
+                    </datalist>
+                </div> 
+                <div>
+                    V:
+                    <input list="video-list" id="video_list" value="{{data_point.media_video_anno}}" cols="5" name="/{{ page_config.prefix }}/comment/media_video_anno/{{ page_config.config_name}}/{{ page_config.file_name }}/{{ data_point.hash_id }}">
+                    <datalist id="video-list" cols="5">
+                        {% for vid_file in ds.video_files %}
+                        <option>{{vid_file}}</option>
+                        {% endfor %}
+                    </datalist>
+                </div>   
+            </div>
+            {% endif %}
+            {% if ds.editor_features.video_preview %}
+            <div class="col-sm-4"  style="min-width: 66px;">
+                {% if 'https://' in data_point.video_preview_url %}
+                <div class="video_wrapper">
+                <iframe src="{{data_point.video_preview_url}}"></iframe>
+                </div>
+                {% else %}
+                <video style="width: 100%" controls>
+                    <source src="{{data_point.video_preview_url}}" type="video/mp4" alt="{{ data_point.video_preview_url }}">
+                    Your browser does not support the video tag.
+                </video> 
+                {% endif %}
+            </div>
+            {% endif %}
+            <div class="w-100"></div>
+            {% endfor %}
+            </div>
+        </div>
+
+    </div>
+    <script>
+    function SearchFunction() {
+        // Declare variables
+        var input, filter, table, tr, td, i, txtValue;
+            input = document.getElementById("myInput");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("mainTable");
+            tr = table.getElementsByTagName("tr");
+    
+            // Loop through all table rows, and hide those who don't match the search query
+            for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[3];
+                if (td) {
+                txtValue = td.textContent || td.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>
