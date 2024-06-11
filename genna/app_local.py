@@ -2,44 +2,30 @@
 from threading import Lock
 from werkzeug.wsgi import pop_path_info, peek_path_info
 from werkzeug.serving import run_simple
-from anna.app import app
+from app import app
 
 from flask import Flask, redirect
 
 
-
 class AppConfig():
     NAV_BAR = [
-        {'name': 'Home', 'link': '/anna/'},
+        {'name': 'Home', 'link': '/genna/'},
     ]
-    PREFIX = 'anna'
-    PROJECT = 'anna'
-    INPUT_PATH = '../endeavor/text_structure_extract/data/datasets'
-    CONFIG_FILE_PATH = './config.yaml'
-    ANNOTATIONS_PATH = '../endeavor/text_structure_extract/data'
-    ANNOTATIONS_LATEST_PATH = '../endeavor/text_structure_extract/data/annotations_latest'
-    WORKFLOW_NEXT_BUTTON_URL = './anna'
-    WORKFLOW_HEADER = 'Anna'
-
-class AppConfig():
-    NAV_BAR = [
-        {'name': 'Home', 'link': '/anna/'},
-    ]
-    PREFIX = 'anna'
-    PROJECT = 'anna'
-    INPUT_PATH = './data/datasets'
-    CONFIG_FILE_PATH = './config.yaml'
-    ANNOTATIONS_PATH = './data'
+    PREFIX = 'genna'
+    PROJECT = 'genna'
+    GENNA_INPUT_PATH = './data/datasets'
+    GENNA_CONFIG_FILE_PATH = './config.yaml'
+    GENNA_ANNOTATIONS_PATH = './data/annotations'
     ANNOTATIONS_LATEST_PATH = './data/annotations_latest'
-    WORKFLOW_NEXT_BUTTON_URL = './anna'
-    WORKFLOW_HEADER = 'Anna'
+    WORKFLOW_NEXT_BUTTON_URL = './genna'
+    WORKFLOW_HEADER = 'Genna'
 
 default_app = Flask(__name__)
 default_app.debug = True
 
 @default_app.route('/')
 def initial():
-    return redirect('/anna/')
+    return redirect('/genna/')
 
 class PathDispatcher(object):
 
@@ -67,7 +53,7 @@ class PathDispatcher(object):
         return app(environ, start_response)
 
 get_user_for_prefix ={
-    'anna':'__main__.AppConfig',
+    'genna':'__main__.AppConfig',
 }
 
 def create_app(config_filename):

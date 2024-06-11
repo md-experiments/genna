@@ -2,7 +2,7 @@
 import json
 import os
 import pandas as pd
-from anna.utils import hash_text, read_yaml, files_in_dir_any_filter, files_in_dir, add_dict
+from src.utils import hash_text, read_yaml, files_in_dir_any_filter, files_in_dir, add_dict
 import yaml
 
 def get_global_vars(inputs_path, config_file_path):
@@ -11,7 +11,8 @@ def get_global_vars(inputs_path, config_file_path):
     list_configs.sort()
     #dataset_path = f'{data_path}/datasets/'
     list_files = files_in_dir(inputs_path)
-    list_files = [f.split('/')[-1] for f in list_files if not f.endswith('DS_Store')]
+    print(list_files)
+    list_files = [f.split(os.sep)[-1] for f in list_files if not f.endswith('DS_Store')]
     list_files.sort()
     return list_configs, list_files
 

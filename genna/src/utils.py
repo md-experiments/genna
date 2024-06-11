@@ -5,6 +5,13 @@ import datetime
 import yaml
 from passlib.hash import pbkdf2_sha512
 
+
+def set_env(var: str):
+    if not os.environ.get(var):
+        with open(f"./{var.upper()}.key", "r") as f:
+            os.environ[var] = f.read().strip()
+
+
 def read_yaml(path):
     with open(path) as file:
         read_configs = yaml.load(file, Loader=yaml.FullLoader)

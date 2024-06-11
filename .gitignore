@@ -2,6 +2,7 @@
 # Model checkpoints
 *.pt
 *.zip
+*.key
 
 #packaging
 *.egg-info
